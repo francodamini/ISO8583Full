@@ -17,6 +17,11 @@ ISO8583Message *iso8583_create(){
     return msg;
 }
 
+void iso8583_set_mti(ISO8583Message *msg, char *value) {
+    if (!msg) return;
+    strncpy(msg->MTI, value, sizeof(msg->MTI) - 1);
+}
+
 void iso8583_set_field(ISO8583Message *msg, int field, const char *value){
     if (field < 1 || field > NUM_FIELDS) return;
     
@@ -47,8 +52,40 @@ void iso8583_free(ISO8583Message *msg){
 
 void iso8583_print(const ISO8583Message *msg) {
     printf("MTI: %s\n", msg->MTI);
-    printf("Bitmap: %s\n", msg->bitmap);
+    printf("Bitmap: ");
+    for (int i = 0; i < 16; i++){
+        for (int bit = 7; bit >= 0; bit--){
+            printf("%d", (msg->bitmap[i] >> bit) & 1);
+        }
+    }
+    printf("\n");
     for (int i = 1; i <= NUM_FIELDS; i++){
         if (msg->DE[i]) printf("Field %d: %s\n", i, msg->DE[i]);
     }
 }
+
+int main() {
+    ISO8583Message *msg = iso8583_create();
+    if (!msg) {
+        printf("Error al crear el mensaje ISO8583.\n");
+        return 1;
+    }
+
+    // Asignamos el MTI
+    iso8583_set_mti(msg, "0100");
+    // Establecemos algunos campos
+    iso8583_set_field(msg, 2, "4000001234567899");  // PAN (Primary Account Number)
+    iso8583_set_field(msg, 3, "000000");            // Processing Code
+    iso8583_set_field(msg, 4, "000000010000");      // Amount, Transaction
+    iso8583_set_field(msg, 7, "0429123456");        // Transmission Date & Time
+    iso8583_set_field(msg, 11, "123456");           // Systems Trace Audit Number (STAN)
+
+    // Imprimimos el mensaje
+    iso8583_print(msg);
+
+    // Liberamos la memoria
+    iso8583_free(msg);
+
+    return 0;
+}
+

@@ -11,6 +11,7 @@ typedef struct
 } ISO8583Message;
 
 ISO8583Message *iso8583_create();
+void iso8583_set_mti(ISO8583Message *msg, char *value);
 void iso8583_set_field(ISO8583Message *msg, int field, const char *value);
 const char *iso8583_get_field(ISO8583Message *msg, int field);
 void iso8583_free(ISO8583Message *msg);

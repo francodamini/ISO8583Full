@@ -39,7 +39,7 @@
 | 41       | Terminal ID              | AN         | 8         |
 | 49       | Currency Code            | N          | 3         |
 
-## ✅ PHASE 3: NEXT STEPS — CODE MODULES
+## ✅ PHASE 3: CODE MODULES
 
 1. **Field Definitions (C struct + constants)**
 2. **Bitmap Handling Functions**

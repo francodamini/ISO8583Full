@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define AMOUNT_OF_CLIENTS 5
+
 int start_server(int port) {
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_socket == -1){
+    if (server_socket < 0){
         perror("Error creating the socket");
             exit(EXIT_FAILURE);
     }
@@ -21,7 +23,23 @@ int start_server(int port) {
         perror("Error while binding socket");
         exit(EXIT_FAILURE);
     }
+
+    if (listen(server_socket, AMOUNT_OF_CLIENTS) < 0){
+        perror("Error at listening");
+        exit(EXIT_FAILURE);
+    }
+
+    while (1) {
+        
+    }
+
 }
+
+int accept_client(int server_socket){
+    
+}
+
+
 
 int main(){
     return 0;

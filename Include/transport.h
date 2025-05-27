@@ -3,6 +3,7 @@
 
 int start_server(int port);                      // Returns server socket
 int accept_client(int server_sock);              // Accepts a client connection
+
 int connect_to_server(const char *ip, int port); // Connect to a server
 
 int send_message(int sockfd, const char *data, int len);   // Sends message (with length prefix)
